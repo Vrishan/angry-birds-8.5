@@ -6,7 +6,8 @@ const Constraint = Matter.Constraint;
 var engine, world;
 var box1, pig1,pig3;
 var backgroundImg,platform;
-var bird, slingshot;
+var bird,bird2,bird3,bird4, slingshot;
+var birds = [];
 
 var gameState = "onSling";
 var bg = "sprites/bg1.png";
@@ -45,6 +46,15 @@ function setup(){
     log5 = new Log(870,120,150, -PI/7);
 
     bird = new Bird(200,50);
+    bird2 = new Bird(150,100);
+    bird3 = new Bird(100,100);
+    bird4 = new Bird(50,100);
+    birds.push(bird4);
+    birds.push(bird3);
+    birds.push(bird2);
+    birds.push(bird);
+
+
 
     //log6 = new Log(230,180,80, PI/2);
     slingshot = new SlingShot(bird.body,{x:200, y:50});
@@ -79,15 +89,20 @@ function draw(){
     log5.display();
 
     bird.display();
+    bird2.display();
+    bird3.display();
+    bird4.display();
+
     platform.display();
     //log6.display();
-    slingshot.display();    
+    slingshot.display(); 
+
 }
 
 function mouseDragged(){
     if (gameState!=="launched"){
        // console.log(bird.body.position.x);
-        Matter.Body.setPosition(bird.body, {x: mouseX , y: mouseY});
+        Matter.Body.setPosition(birds[birds.length-1].body, {x: mouseX , y: mouseY});
     }
 }
 
@@ -96,12 +111,13 @@ function mouseReleased(){
     slingshot.fly();
     gameState = "launched";
     birdFlight.play();
+    birds.pop();
 }
 
 function keyPressed(){
     if(keyCode === 32){
-        Matter.Body.setPosition(bird.body,{x:200,y:50})
-       slingshot.attach(bird.body);
+        Matter.Body.setPosition(birds[birds.length-1].body,{x:200,y:50})
+       slingshot.attach(birds[birds.length-1].body);
        gameState = "onSling";
        bird.trajectory = [];
        
